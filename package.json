@@ -1,0 +1,23 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "[![Actions Status](https://github.com/animch/frontend-project-11/workflows/hexlet-check/badge.svg)](https://github.com/animch/frontend-project-11/actions)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/animch/frontend-project-11.git"
+  },
+  "author": "animch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/animch/frontend-project-11/issues"
+  },
+  "homepage": "https://github.com/animch/frontend-project-11#readme",
+  "devDependencies": {
+    "eslint": "^8.37.0"
+  }
+}
