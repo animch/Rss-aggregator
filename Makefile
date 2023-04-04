@@ -4,5 +4,7 @@ publish:
 	npm publish --dry-run	
 lint:
 	npx eslint .
-test-coverage:
-	npm test -- --coverage
+develop:
+	npx webpack serve
+build:
+	NODE_ENV=production npx webpack
