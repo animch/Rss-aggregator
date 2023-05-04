@@ -31,7 +31,7 @@ const renderContainer = (type, i18nextInstance) => {
   const header = document.createElement('h2');
   cardBody.append(header);
   header.classList.add('card-title', 'h4');
-  header.textContent = type === 'feeds' ? i18nextInstance.t('feeds.title') : i18nextInstance.t('posts.title');
+  header.textContent = (type === 'feeds') ? i18nextInstance.t('feeds.title') : i18nextInstance.t('posts.title');
   const list = document.createElement('ul');
   cardBody.append(list);
   list.classList.add('list-group', 'border-0', 'rounded-0');

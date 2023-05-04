@@ -1,27 +1,21 @@
-import axios from 'axios';
 import { string } from 'yup';
+import axios from 'axios';
 import i18next from 'i18next';
 import _ from 'lodash';
 import resources from './locales/index.js';
 import watchState from './view.js';
 import parseRss from './parser.js';
 
-
 export default () => {
-  const initialState = {
-    form: {
-        state: 'filling',
-        error: null,
+  const state = {
+    formStatus: 'ready',
+    rss: {
+      feeds: [],
+      posts: [],
+      seenPosts: [],
     },
-    posts: [],
-    feeds: [],
-    seenPosts: [],
-  };
-
-  const validate = (url) => {
-    const rssList = watchedState.feeds.map((feed) => feed.url);
-    const schema = string().url().notOneOf(rssList);
-    return schema.validate(url);
+    error: null,
+    modal: {},
   };
 
   const elements = {
@@ -31,72 +25,75 @@ export default () => {
     posts: document.querySelector('.posts'),
     feeds: document.querySelector('.feeds'),
     modal: document.getElementById('modal'),
-    };
-    
+  };
+
   const i18nextInstanse = i18next.createInstance();
-  const watchedState = watchState(initialState, i18nextInstanse, elements);
-    
-  const delay = 5000;
+  const watchedState = watchState(state, i18nextInstanse, elements);
+
+  const TIME_STEP = 5000;
 
   const postsEventListener = (e) => {
     const targetPost = e.target;
     if (targetPost.tagName !== 'A') {
       return;
     }
-    const targetPostId = e.target.dataset.id;
-    if (!watchedState.seenPosts.includes(targetPostId)) {
-      watchState.seenPosts.push(targetPostId);
+    const targetPostId = targetPost.dataset.id;
+    if (!watchedState.rss.seenPosts.includes(targetPostId)) {
+      watchedState.rss.seenPosts.push(targetPostId);
     }
   };
 
   const modalEventListener = (e) => {
-    const button  = e.relatedTarget;
+    const button = e.relatedTarget;
     const buttonId = button.dataset.id;
-    const currentPost = watchedState.posts.find((post) => post.id === buttonId);
+    const currentPost = watchedState.rss.posts.find((post) => post.id === buttonId);
     const { id } = currentPost;
-
-    if (!watchedState.seenPosts.includes(id)) {
-      watchedState.seenPosts.push(id);
+    if (!watchedState.rss.seenPosts.includes(id)) {
+      watchedState.rss.seenPosts.push(id);
     }
     watchedState.modal = { ...currentPost };
   };
 
-  const addPostsId = (posts) => {
-    if (posts.length === 0) {
-      return [];
-    }
-    return posts.map((post) => {
-      const id = _.uniqueId();
-      return { ...posts, id };
-    });
-  };
-
-  const updatePosts = (posts) => {
-    const titles = watchedState.posts.map((post) => post.title);
-    const postsToUpdate = posts.filter((post) => !titles.includes(post.title));
-    const postsWithId = addPostsId(postsToUpdate);
-    watchedState.posts.push(...postsWithId);
+  const validateUrl = (url) => {
+    const rssList = watchedState.rss.feeds.map((feed) => feed.url);
+    const urlSchema = string().url().notOneOf(rssList);
+    return urlSchema.validate(url);
   };
 
   const makeProxy = (url) => `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
 
-  const getUpdateRSS = () => {
-    const rssList = watchedState.feeds.map((feed) => feed.url);
+  const addPostsID = (posts) => {
+    if (posts.length === 0) return [];
+    return posts.map((post) => {
+      const id = _.uniqueId();
+      return { ...post, id };
+    });
+  };
+
+  const getUpdatedRss = () => {
+    const rssList = watchedState.rss.feeds.map((feed) => feed.url);
     return rssList.map((rss) => axios.get(makeProxy(rss))
       .then((response) => parseRss(response.data.contents)));
-  }
-    
-  const checkUpdates = () => {
-    const promises = getUpdateRSS();
+  };
+
+  const updatePosts = (posts) => {
+    const titles = watchedState.rss.posts.map((post) => post.title);
+    const postsToUpdate = posts.filter((post) => !titles.includes(post.title));
+    const postsWithID = addPostsID(postsToUpdate);
+    watchedState.rss.posts.push(...postsWithID);
+  };
+
+  const checkForUpdates = () => {
+    const promises = getUpdatedRss();
     Promise.allSettled(promises)
       .then((results) => {
-        const fullFieldPosts = results
+        const fullfiledPosts = results
           .filter((result) => result.status === 'fulfilled')
           .map((result) => result.value.posts);
-        updatePosts(fullFieldPosts.flat());
+        updatePosts(fullfiledPosts.flat());
       })
       .finally(() => {
-        setTimeout(checkUpdates, delay);
+        setTimeout(checkForUpdates, TIME_STEP);
       });
   };
 
@@ -106,38 +103,38 @@ export default () => {
 
   i18nextInstanse.init({
     lng: 'ru',
-    dubug: true,
-    resources
+    debug: true,
+    resources,
   }).then(() => {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
       const url = input.value;
-      validate(url)
+      validateUrl(url)
         .then(() => {
-          watchedState.form.status = 'inProcess';
+          watchedState.formStatus = 'inProcess';
           return axios.get(makeProxy(url));
         })
         .then((response) => {
           const { feed, posts } = parseRss(response.data.contents);
           feed.url = url;
-          const postsWithId = addPostsId(posts);
-          watchedState.form.status = 'succes';
-          watchedState.feeds.push(feed);
-          watchedState.posts.push(...postsWithId);
+          const postsWithID = addPostsID(posts);
+          watchedState.formStatus = 'success';
+          watchedState.rss.feeds.push(feed);
+          watchedState.rss.posts.push(...postsWithID);
         })
-        .cath((e) => {
+        .catch((e) => {
           let errorMessage;
           if (e.name === 'AxiosError') {
             errorMessage = 'networkError';
           } else if (e.message === 'parseError') {
-            errorMessage = 'invalidRss'
+            errorMessage = 'invalidRss';
           } else {
             errorMessage = e.type;
           }
-          watchedState.form.error = errorMessage;
-          watchedState.form.status = 'error';
+          watchedState.error = errorMessage;
+          watchedState.formStatus = 'error';
         });
     });
   });
-  checkUpdates();
+  checkForUpdates();
 };
