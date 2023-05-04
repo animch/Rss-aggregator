@@ -1,4 +1,4 @@
-name: Github-actions
+name: NodeCI
 on:
   - push
   - pull_request
