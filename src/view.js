@@ -11,14 +11,14 @@ const renderSuccessForm = (input, statusMessage, i18nextInstance) => {
   input.value = '';
   statusMessage.classList.remove('text-danger');
   statusMessage.classList.add('text-success');
-  statusMessage.textContent = i18nextInstance.t('rssStatusMessage.success');
+  statusMessage.textContent = i18nextInstance.t('status.success');
   input.removeAttribute('readonly');
 };
 
 const renderErrorForm = (input, statusMessage, i18nextInstance, error) => {
   input.classList.add('is-invalid');
   statusMessage.classList.add('text-danger');
-  statusMessage.textContent = i18nextInstance.t(`rssStatusMessage.${error}`);
+  statusMessage.textContent = i18nextInstance.t('status');
   input.removeAttribute('readonly');
 };
 
@@ -31,7 +31,7 @@ const renderContainer = (type, i18nextInstance) => {
   const header = document.createElement('h2');
   cardBody.append(header);
   header.classList.add('card-title', 'h4');
-  header.textContent = (type === 'feeds') ? i18nextInstance.t('feeds.title') : i18nextInstance.t('posts.title');
+  header.textContent = type === 'feeds' ? i18nextInstance.t('feeds.title') : i18nextInstance.t('posts.title');
   const list = document.createElement('ul');
   cardBody.append(list);
   list.classList.add('list-group', 'border-0', 'rounded-0');

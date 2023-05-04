@@ -30,7 +30,7 @@ export default () => {
   const i18nextInstanse = i18next.createInstance();
   const watchedState = watchState(state, i18nextInstanse, elements);
 
-  const TIME_STEP = 5000;
+  const delay = 5000;
 
   const postsEventListener = (e) => {
     const targetPost = e.target;
@@ -93,7 +93,7 @@ export default () => {
         updatePosts(fullfiledPosts.flat());
       })
       .finally(() => {
-        setTimeout(checkForUpdates, TIME_STEP);
+        setTimeout(checkForUpdates, delay);
       });
   };
 
