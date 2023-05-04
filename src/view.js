@@ -18,7 +18,7 @@ const renderSuccessForm = (input, statusMessage, i18nextInstance) => {
 const renderErrorForm = (input, statusMessage, i18nextInstance, error) => {
   input.classList.add('is-invalid');
   statusMessage.classList.add('text-danger');
-  statusMessage.textContent = i18nextInstance.t('status');
+  statusMessage.textContent = i18nextInstance.t(`status.${error}`);
   input.removeAttribute('readonly');
 };
 
