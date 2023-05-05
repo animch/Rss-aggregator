@@ -1,4 +1,4 @@
-import { string } from 'yup';
+import * as yup from 'yup';
 import axios from 'axios';
 import i18next from 'i18next';
 import _ from 'lodash';
@@ -27,8 +27,8 @@ export default () => {
     modal: document.getElementById('modal'),
   };
 
-  const i18nextInstanse = i18next.createInstance();
-  const watchedState = watchState(state, i18nextInstanse, elements);
+  const i18nextInstance = i18next.createInstance();
+  const watchedState = watchState(state, i18nextInstance, elements);
 
   const delay = 5000;
 
@@ -56,7 +56,7 @@ export default () => {
 
   const validateUrl = (url) => {
     const rssList = watchedState.rss.feeds.map((feed) => feed.url);
-    const urlSchema = string().url().notOneOf(rssList);
+    const urlSchema = yup.string().url().notOneOf(rssList);
     return urlSchema.validate(url);
   };
 
@@ -101,7 +101,7 @@ export default () => {
   window.addEventListener('click', postsEventListener);
   modal.addEventListener('show.bs.modal', modalEventListener);
 
-  i18nextInstanse.init({
+  i18nextInstance.init({
     lng: 'ru',
     debug: true,
     resources,
