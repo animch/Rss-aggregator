@@ -1,7 +1,7 @@
 export default {
-  traslation: {
+  translation: {
     status: {
-      succes: 'RSS успешно загружен',
+      success: 'RSS успешно загружен',
       url: 'Ссылка должна быть валидным URL',
       notOneOf: 'RSS уже существует',
       invalidRss: 'Ресурс не содержит валидный RSS',

@@ -11,14 +11,14 @@ const renderSuccessForm = (input, statusMessage, i18nextInstance) => {
   input.value = '';
   statusMessage.classList.remove('text-danger');
   statusMessage.classList.add('text-success');
-  statusMessage.textContent = i18nextInstance.t('rssStatusMessage.success');
+  statusMessage.textContent = i18nextInstance.t('status.success');
   input.removeAttribute('readonly');
 };
 
 const renderErrorForm = (input, statusMessage, i18nextInstance, error) => {
   input.classList.add('is-invalid');
   statusMessage.classList.add('text-danger');
-  statusMessage.textContent = i18nextInstance.t(`rssStatusMessage.${error}`);
+  statusMessage.textContent = i18nextInstance.t(`status.${error}`);
   input.removeAttribute('readonly');
 };
 
