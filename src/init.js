@@ -24,7 +24,7 @@ export default () => {
     statusMessage: document.querySelector('.feedback'),
     posts: document.querySelector('.posts'),
     feeds: document.querySelector('.feeds'),
-    modal: document.getElementById('modal'),
+    modal: document.querySelector('#modal'),
   };
 
   const i18nextInstance = i18next.createInstance();

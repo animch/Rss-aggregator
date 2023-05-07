@@ -102,9 +102,9 @@ const renderSeenPosts = (IDs) => {
 };
 
 const renderModalWindow = (modalEl, modalState) => {
-  const title = modalEl.querySelector('.modal-title');
-  const body = modalEl.querySelector('.modal-body');
-  const readFullArticle = modalEl.querySelector('.full-article');
+  const title = modalEl.querySelector('#modal .modal-title');
+  const body = modalEl.querySelector('#modal .modal-body');
+  const readFullArticle = modalEl.querySelector('#modal a');
   title.textContent = modalState.title;
   body.textContent = modalState.description;
   readFullArticle.href = modalState.link;
