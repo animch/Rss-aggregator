@@ -12,10 +12,10 @@ export default () => {
     rss: {
       feeds: [],
       posts: [],
-      seenPosts: [],
+      seenPosts: new Set(),
     },
     error: null,
-    modal: {},
+    modal: { postId: null },
   };
 
   const elements = {
@@ -25,6 +25,7 @@ export default () => {
     posts: document.querySelector('.posts'),
     feeds: document.querySelector('.feeds'),
     modal: document.querySelector('#modal'),
+    formButton: document.querySelector('.h-100'),
   };
 
   const i18nextInstance = i18next.createInstance();
@@ -38,8 +39,8 @@ export default () => {
       return;
     }
     const targetPostId = targetPost.dataset.id;
-    if (!watchedState.rss.seenPosts.includes(targetPostId)) {
-      watchedState.rss.seenPosts.push(targetPostId);
+    if (!watchedState.rss.seenPosts.has(targetPostId)) {
+      watchedState.rss.seenPosts.add(targetPostId);
     }
   };
 
@@ -47,10 +48,6 @@ export default () => {
     const button = e.relatedTarget;
     const buttonId = button.dataset.id;
     const currentPost = watchedState.rss.posts.find((post) => post.id === buttonId);
-    const { id } = currentPost;
-    if (!watchedState.rss.seenPosts.includes(id)) {
-      watchedState.rss.seenPosts.push(id);
-    }
     watchedState.modal = { ...currentPost };
   };
 
@@ -60,10 +57,15 @@ export default () => {
     return urlSchema.validate(url);
   };
 
-  const makeProxy = (url) => `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
+  const makeProxy = (url) => {
+    const proxyUrl = new URL('/get', 'https://allorigins.hexlet.app');
+    proxyUrl.searchParams.set
+    proxyUrl.searchParams.set('url', url);
+    proxyUrl.searchParams.set('disableCache', 'true');
+    return proxyUrl.toString();
+  };
 
   const addPostsID = (posts) => {
-    if (posts.length === 0) return [];
     return posts.map((post) => {
       const id = _.uniqueId();
       return { ...post, id };
@@ -97,7 +99,7 @@ export default () => {
       });
   };
 
-  const { modal, form, input } = elements;
+  const { modal, form, input, formButton } = elements;
   window.addEventListener('click', postsEventListener);
   modal.addEventListener('show.bs.modal', modalEventListener);
 
@@ -108,10 +110,10 @@ export default () => {
   }).then(() => {
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+      watchedState.formStatus = 'inProcess';
       const url = input.value;
       validateUrl(url)
         .then(() => {
-          watchedState.formStatus = 'inProcess';
           return axios.get(makeProxy(url));
         })
         .then((response) => {

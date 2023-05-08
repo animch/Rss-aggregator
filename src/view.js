@@ -1,18 +1,20 @@
 import onChange from 'on-change';
 
-const renderProcessForm = (input, statusMessage) => {
+const renderProcessForm = (input, statusMessage, formButton) => {
   input.setAttribute('readonly', 'true');
   input.classList.remove('is-invalid');
   statusMessage.textContent = '';
+  formButton.setAttribute('disabled', '')
 };
 
-const renderSuccessForm = (input, statusMessage, i18nextInstance) => {
+const renderSuccessForm = (input, statusMessage, i18nextInstance, formButton) => {
   input.classList.remove('is-invalid');
   input.value = '';
   statusMessage.classList.remove('text-danger');
   statusMessage.classList.add('text-success');
   statusMessage.textContent = i18nextInstance.t('status.success');
   input.removeAttribute('readonly');
+  formButton.removeAttribute('disabled');
 };
 
 const renderErrorForm = (input, statusMessage, i18nextInstance, error) => {
@@ -115,10 +117,10 @@ export default (state, i18nextInstance, elements) => onChange(state, (path, valu
     case 'formStatus':
       switch (value) {
         case 'success':
-          renderSuccessForm(elements.input, elements.statusMessage, i18nextInstance);
+          renderSuccessForm(elements.input, elements.statusMessage, i18nextInstance, elements.formButton);
           break;
         case 'inProcess':
-          renderProcessForm(elements.input, elements.statusMessage);
+          renderProcessForm(elements.input, elements.statusMessage, elements.formButton);
           break;
         case 'error':
           renderErrorForm(elements.input, elements.statusMessage, i18nextInstance, state.error);

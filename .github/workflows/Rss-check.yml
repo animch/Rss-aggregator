@@ -1,4 +1,4 @@
-name: NodeCI
+name: Rss-check
 on:
   - push
   - pull_request

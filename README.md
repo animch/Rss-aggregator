@@ -17,6 +17,7 @@
 <ol>
   <li>Склонируйте репозиторий: git clone git@github.com:animch/frontend-project-44.git</li>
   <li>Установите зависимости: make install</li>
+  <li>Запустите локальный сервер: make develop</li>
 </ol>
 
 <h3><a href='https://frontend-project-11-animch.vercel.app'>Демонстрация</a></h3>

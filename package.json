@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/animch/frontend-project-11#readme",
   "devDependencies": {
-    "@webpack-cli/generators": "^3.0.1",
     "autoprefixer": "^10.4.14",
     "css-loader": "^6.7.3",
     "eslint": "^8.37.0",
