@@ -106,8 +106,8 @@ export default () => {
     resources,
   }).then(() => {
     form.addEventListener('submit', (event) => {
-      watchedState.formStatus = 'inProcess';
       event.preventDefault();
+      watchedState.formStatus = 'inProcess';
       const url = input.value;
       validateUrl(url)
         .then(() => axios.get(makeProxy(url)))
