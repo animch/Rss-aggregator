@@ -19,4 +19,4 @@
   <li>Установите зависимости: make install</li>
 </ol>
 
-<a href='https://frontend-project-11-animch.vercel.app'>Демонстрация</a>
+<h3><a href='https://frontend-project-11-animch.vercel.app'>Демонстрация</a></h3>
