@@ -1,5 +1,5 @@
 ### Hexlet tests and linter status:
-[![Actions Status](https://github.com/animch/frontend-project-11/workflows/hexlet-check/badge.svg)](https://github.com/animch/frontend-project-11/actions)<a href="https://codeclimate.com/github/animch/frontend-project-11/maintainability"><img src="https://api.codeclimate.com/v1/badges/0f7021c87d7a68b0fea0/maintainability" /></a>[![NodeCI](https://github.com/animch/frontend-project-11/actions/workflows/NodeCI.yml/badge.svg)](https://github.com/animch/frontend-project-11/actions/workflows/NodeCI.yml)
+[![Actions Status](https://github.com/animch/frontend-project-11/workflows/hexlet-check/badge.svg)](https://github.com/animch/frontend-project-11/actions)<a href="https://codeclimate.com/github/animch/frontend-project-11/maintainability"><img src="https://api.codeclimate.com/v1/badges/0f7021c87d7a68b0fea0/maintainability" /></a>[![Rss-check](https://github.com/animch/frontend-project-11/actions/workflows/Rss-check.yml/badge.svg)](https://github.com/animch/frontend-project-11/actions/workflows/Rss-check.yml)
 
 <h1>RSS агрегатор</h1>
 

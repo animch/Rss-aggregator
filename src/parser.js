@@ -16,7 +16,7 @@ const parseRss = (content) => {
     const posts = postElems.map((post) => getValueAtribute(post));
     return { feed, posts };
   } catch {
-    const parseError = document.querySelector("parsererror");
+    const parseError = document.querySelector('parsererror');
     throw new Error(parseError.textContent);
   }
 };

@@ -59,18 +59,15 @@ export default () => {
 
   const makeProxy = (url) => {
     const proxyUrl = new URL('/get', 'https://allorigins.hexlet.app');
-    proxyUrl.searchParams.set
     proxyUrl.searchParams.set('url', url);
     proxyUrl.searchParams.set('disableCache', 'true');
     return proxyUrl.toString();
   };
 
-  const addPostsID = (posts) => {
-    return posts.map((post) => {
-      const id = _.uniqueId();
-      return { ...post, id };
-    });
-  };
+  const addPostsID = (posts) => posts.map((post) => {
+    const id = _.uniqueId();
+    return { ...post, id };
+  });
 
   const getUpdatedRss = () => {
     const rssList = watchedState.rss.feeds.map((feed) => feed.url);
@@ -99,7 +96,7 @@ export default () => {
       });
   };
 
-  const { modal, form, input, formButton } = elements;
+  const { modal, form, input } = elements;
   window.addEventListener('click', postsEventListener);
   modal.addEventListener('show.bs.modal', modalEventListener);
 
@@ -109,13 +106,11 @@ export default () => {
     resources,
   }).then(() => {
     form.addEventListener('submit', (event) => {
-      event.preventDefault();
       watchedState.formStatus = 'inProcess';
+      event.preventDefault();
       const url = input.value;
       validateUrl(url)
-        .then(() => {
-          return axios.get(makeProxy(url));
-        })
+        .then(() => axios.get(makeProxy(url)))
         .then((response) => {
           const { feed, posts } = parseRss(response.data.contents);
           feed.url = url;

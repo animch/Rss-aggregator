@@ -4,7 +4,7 @@ const renderProcessForm = (input, statusMessage, formButton) => {
   input.setAttribute('readonly', 'true');
   input.classList.remove('is-invalid');
   statusMessage.textContent = '';
-  formButton.setAttribute('disabled', '')
+  formButton.setAttribute('disabled', '');
 };
 
 const renderSuccessForm = (input, statusMessage, i18nextInstance, formButton) => {
@@ -17,11 +17,12 @@ const renderSuccessForm = (input, statusMessage, i18nextInstance, formButton) =>
   formButton.removeAttribute('disabled');
 };
 
-const renderErrorForm = (input, statusMessage, i18nextInstance, error) => {
+const renderErrorForm = (input, statusMessage, i18nextInstance, error, formButton) => {
   input.classList.add('is-invalid');
   statusMessage.classList.add('text-danger');
   statusMessage.textContent = i18nextInstance.t(`status.${error}`);
   input.removeAttribute('readonly');
+  formButton.removeAttribute('disabled');
 };
 
 const renderContainer = (type, i18nextInstance) => {
@@ -123,7 +124,7 @@ export default (state, i18nextInstance, elements) => onChange(state, (path, valu
           renderProcessForm(elements.input, elements.statusMessage, elements.formButton);
           break;
         case 'error':
-          renderErrorForm(elements.input, elements.statusMessage, i18nextInstance, state.error);
+          renderErrorForm(elements.input, elements.statusMessage, i18nextInstance, state.error, elements.formButton);
           break;
         default:
           throw new Error('Unexpected form status');
