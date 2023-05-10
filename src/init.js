@@ -127,6 +127,7 @@ export default () => {
             errorMessage = 'invalidRss';
           } else {
             errorMessage = e.type;
+            console.log(e.type.textContent);
           }
           watchedState.error = errorMessage;
           watchedState.formStatus = 'error';

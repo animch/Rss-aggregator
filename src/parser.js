@@ -8,16 +8,16 @@ const getValueAtribute = (data) => {
 };
 
 const parseRss = (content) => {
-  try {
-    const parse = new DOMParser();
-    const parsedData = parse.parseFromString(content, 'text/xml');
+  const parse = new DOMParser();
+  const parsedData = parse.parseFromString(content, 'text/xml');
+  const errorNode = parsedData.querySelector('parsererror');
+  if (errorNode) {
+    throw new Error('parseError');
+  } else {
     const feed = getValueAtribute(parsedData);
     const postElems = [...parsedData.querySelectorAll('item')];
     const posts = postElems.map((post) => getValueAtribute(post));
     return { feed, posts };
-  } catch {
-    const parseError = document.querySelector('parsererror');
-    throw new Error(parseError.textContent);
   }
 };
 
