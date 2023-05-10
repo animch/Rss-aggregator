@@ -15,7 +15,7 @@ export default () => {
       seenPosts: new Set(),
     },
     error: null,
-    modal: { postId: null },
+    modal: { postId: '' },
   };
 
   const elements = {
@@ -48,7 +48,11 @@ export default () => {
     const button = e.relatedTarget;
     const buttonId = button.dataset.id;
     const currentPost = watchedState.rss.posts.find((post) => post.id === buttonId);
+    const { id } = currentPost;
     watchedState.modal = { ...currentPost };
+    if (e.target) {
+      watchedState.rss.seenPosts.add(id);
+    }
   };
 
   const validateUrl = (url) => {
