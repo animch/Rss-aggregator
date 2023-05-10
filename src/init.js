@@ -48,6 +48,7 @@ export default () => {
     const button = e.relatedTarget;
     const buttonId = button.dataset.id;
     const currentPost = watchedState.rss.posts.find((post) => post.id === buttonId);
+    console.log(currentPost);
     const { id } = currentPost;
     watchedState.modal = { ...currentPost };
     if (e.target) {

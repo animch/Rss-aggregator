@@ -113,35 +113,35 @@ const renderModalWindow = (modalEl, modalState) => {
   readFullArticle.href = modalState.link;
 };
 
-export default (state, i18nextInstance, elements) => onChange(state, (path, value) => {
+export default (state, i18nextInstance, el) => onChange(state, (path, value) => {
   switch (path) {
     case 'formStatus':
       switch (value) {
         case 'success':
-          renderSuccessForm(elements.input, elements.statusMessage, i18nextInstance, elements.formButton);
+          renderSuccessForm(el.input, el.statusMessage, i18nextInstance, el.formButton);
           break;
         case 'inProcess':
-          renderProcessForm(elements.input, elements.statusMessage, elements.formButton);
+          renderProcessForm(el.input, el.statusMessage, el.formButton);
           break;
         case 'error':
-          renderErrorForm(elements.input, elements.statusMessage, i18nextInstance, state.error, elements.formButton);
+          renderErrorForm(el.input, el.statusMessage, i18nextInstance, state.error, el.formButton);
           break;
         default:
           throw new Error('Unexpected form status');
       }
       break;
     case 'rss.feeds':
-      renderFeeds(elements.feeds, i18nextInstance, value);
+      renderFeeds(el.feeds, i18nextInstance, value);
       break;
     case 'rss.posts':
-      renderPosts(elements.posts, i18nextInstance, value);
+      renderPosts(el.posts, i18nextInstance, value);
       renderSeenPosts(state.rss.seenPosts);
       break;
     case 'rss.seenPosts':
       renderSeenPosts(value);
       break;
     case 'modal':
-      renderModalWindow(elements.modal, value);
+      renderModalWindow(el.modal, value);
       break;
     default:
       break;
