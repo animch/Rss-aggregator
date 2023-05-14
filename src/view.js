@@ -115,7 +115,7 @@ const renderModalWindow = (modalEl, modalState) => {
 
 export default (state, i18nextInstance, el) => onChange(state, (path, value) => {
   switch (path) {
-    case 'formStatus':
+    case 'form.status':
       switch (value) {
         case 'success':
           renderSuccessForm(el.input, el.statusMessage, i18nextInstance, el.formButton);

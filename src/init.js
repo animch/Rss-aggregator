@@ -8,7 +8,11 @@ import parseRss from './parser.js';
 
 export default () => {
   const state = {
-    formStatus: 'ready',
+    form: {
+      status: 'ready',
+      error: null,
+      valid: false,
+    },
     rss: {
       feeds: [],
       posts: [],
@@ -112,7 +116,7 @@ export default () => {
   }).then(() => {
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      watchedState.formStatus = 'inProcess';
+      watchedState.form.status = 'inProcess';
       const url = input.value;
       validateUrl(url)
         .then(() => axios.get(makeProxy(url)))
@@ -120,7 +124,8 @@ export default () => {
           const { feed, posts } = parseRss(response.data.contents);
           feed.url = url;
           const postsWithID = addPostsID(posts);
-          watchedState.formStatus = 'success';
+          form.valid = true;
+          watchedState.form.status = 'success';
           watchedState.rss.feeds.push(feed);
           watchedState.rss.posts.push(...postsWithID);
         })
@@ -128,14 +133,14 @@ export default () => {
           let errorMessage;
           if (e.name === 'AxiosError') {
             errorMessage = 'networkError';
-          } else if (e.message === 'parseError') {
+          } else if (e.parseError) {
             errorMessage = 'invalidRss';
           } else {
             errorMessage = e.type;
-            console.log(e.type.textContent);
           }
           watchedState.error = errorMessage;
-          watchedState.formStatus = 'error';
+          watchedState.form.status = 'error';
+          form.valid = false;
         });
     });
   });

@@ -12,7 +12,9 @@ const parseRss = (content) => {
   const parsedData = parse.parseFromString(content, 'text/xml');
   const errorNode = parsedData.querySelector('parsererror');
   if (errorNode) {
-    throw new Error('parseError');
+    const error = new Error(errorNode.textContent);
+    error.parseError = true;
+    throw error;
   } else {
     const feed = getValueAtribute(parsedData);
     const postElems = [...parsedData.querySelectorAll('item')];
