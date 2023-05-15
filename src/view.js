@@ -96,8 +96,8 @@ const renderFeeds = (feedsEl, i18nextInstance, feedList) => {
   feedsEl.append(view);
 };
 
-const renderSeenPosts = (IDs) => {
-  IDs.forEach((id) => {
+const keepSeenPosts = (iDs) => {
+  iDs.forEach((id) => {
     const seenPost = document.querySelector(`a[data-id="${id}"]`);
     seenPost.classList.remove('fw-bold');
     seenPost.classList.add('fw-normal', 'link-secondary');
@@ -124,7 +124,7 @@ export default (state, i18nextInstance, el) => onChange(state, (path, value) => 
           renderProcessForm(el.input, el.statusMessage, el.formButton);
           break;
         case 'error':
-          renderErrorForm(el.input, el.statusMessage, i18nextInstance, state.error, el.formButton);
+          renderErrorForm(el.input, el.statusMessage, i18nextInstance, state.form.error, el.formButton);
           break;
         default:
           throw new Error('Unexpected form status');
@@ -135,10 +135,10 @@ export default (state, i18nextInstance, el) => onChange(state, (path, value) => 
       break;
     case 'rss.posts':
       renderPosts(el.posts, i18nextInstance, value);
-      renderSeenPosts(state.rss.seenPosts);
+      keepSeenPosts(state.rss.seenPosts);
       break;
     case 'rss.seenPosts':
-      renderSeenPosts(value);
+      keepSeenPosts(value);
       break;
     case 'modal':
       renderModalWindow(el.modal, value);

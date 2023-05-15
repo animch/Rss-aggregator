@@ -8,8 +8,12 @@ import parseRss from './parser.js';
 
 export default () => {
   const state = {
+    loadingProcess: {
+      status: 'idle',
+      error: null,
+    },
     form: {
-      status: 'ready',
+      status: 'filling',
       error: null,
       valid: false,
     },
@@ -18,8 +22,7 @@ export default () => {
       posts: [],
       seenPosts: new Set(),
     },
-    error: null,
-    modal: { postId: '' },
+    modal: { postId: null },
   };
 
   const elements = {
@@ -29,7 +32,7 @@ export default () => {
     posts: document.querySelector('.posts'),
     feeds: document.querySelector('.feeds'),
     modal: document.querySelector('#modal'),
-    formButton: document.querySelector('.h-100'),
+    formButton: document.querySelector('.btn-lg'),
   };
 
   const i18nextInstance = i18next.createInstance();
@@ -52,7 +55,6 @@ export default () => {
     const button = e.relatedTarget;
     const buttonId = button.dataset.id;
     const currentPost = watchedState.rss.posts.find((post) => post.id === buttonId);
-    console.log(currentPost);
     const { id } = currentPost;
     watchedState.modal = { ...currentPost };
     if (e.target) {
@@ -117,6 +119,7 @@ export default () => {
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       watchedState.form.status = 'inProcess';
+      watchedState.loadingProcess.status = 'loadig';
       const url = input.value;
       validateUrl(url)
         .then(() => axios.get(makeProxy(url)))
@@ -128,6 +131,7 @@ export default () => {
           watchedState.form.status = 'success';
           watchedState.rss.feeds.push(feed);
           watchedState.rss.posts.push(...postsWithID);
+          watchedState.loadingProcess.status = 'idle';
         })
         .catch((e) => {
           let errorMessage;
@@ -138,7 +142,7 @@ export default () => {
           } else {
             errorMessage = e.type;
           }
-          watchedState.error = errorMessage;
+          watchedState.form.error = errorMessage;
           watchedState.form.status = 'error';
           form.valid = false;
         });
