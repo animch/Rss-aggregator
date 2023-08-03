@@ -15,7 +15,7 @@
 
 <h3>Установка</h3>
 <ol>
-  <li>Склонируйте репозиторий: git clone git@github.com:animch/frontend-project-44.git</li>
+  <li>Склонируйте репозиторий: git clone git@github.com:animch/Rss-aggregator.git</li>
   <li>Установите зависимости: make install</li>
   <li>Запустите локальный сервер: make develop</li>
 </ol>
